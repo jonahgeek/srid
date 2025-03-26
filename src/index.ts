@@ -22,7 +22,7 @@ export const decryptState = (encoded: string): Record<string, any> => {
   return JSON.parse(decrypted);
 };
 
-export const generateDeepLink = ({
+const generate = ({
   baseUrl,
   route,
   params,
@@ -78,10 +78,17 @@ export const parseDeepLink = (
   return result;
 };
 
-export const useDeepLink = () => {
+const use = () => {
   const location = useLocation();
 
   return useMemo(() => {
     return parseDeepLink(new URLSearchParams(location.search));
   }, [location.search]);
 };
+
+export const link = {
+  generate,
+  use,
+};
+
+export default link;
