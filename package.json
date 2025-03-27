@@ -1,7 +1,7 @@
 {
-  "name": "react-deep-link",
-  "version": "1.0.14",
-  "description": "A React-compatible deep linking library for cross-domain UI state sharing.",
+  "name": "srid",
+  "version": "1.0.16",
+  "description": "A library that provides a simple and consistent way to generate linked, traceable, and country-aware unique IDs for users, wallets, and transactions.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -28,7 +28,7 @@
   "author": "Jonahgeek",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jonahgeek/react-deep-link.git"
+    "url": "https://github.com/jonahgeek/srid.git"
   },
   "license": "MIT",
   "dependencies": {

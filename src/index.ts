@@ -1,94 +1,65 @@
-import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+// SHARED ROOT IDENTIFIER (SRID) Library (TypeScript)
 
-const SECRET = "ALVBSLRGIBLSIUHRG395HGO4539RUFSIEVUGNBS4L8HGIWUN";
-
-export const encryptState = (state: Record<string, any>): string => {
-  const json = JSON.stringify(state);
-  const buffer = new TextEncoder().encode(json);
-  return btoa(
-    buffer.reduce(
-      (data, byte) => data + String.fromCharCode(byte ^ SECRET.charCodeAt(0)),
-      ""
-    )
-  );
-};
-
-export const decryptState = (encoded: string): Record<string, any> => {
-  const decoded = atob(encoded);
-  const decrypted = new TextDecoder().decode(
-    Uint8Array.from(decoded, (c) => c.charCodeAt(0) ^ SECRET.charCodeAt(0))
-  );
-  return JSON.parse(decrypted);
-};
-
-const generate = ({
-  baseUrl,
-  route,
-  params,
-  state,
-}: {
-  baseUrl: string;
-  route: string;
-  params?: Record<string, string>;
-  state?: Record<string, any>;
-}): string => {
-  const url = new URL(`${baseUrl}${route}`);
-
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.set(key, value);
-    });
+// Utility: Generate a random 6-char alphanumeric string
+function generateHashChunk(length: number = 6): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-
-  if (state) {
-    const encrypted = encryptState(state);
-    url.searchParams.set("state", encrypted);
-  }
-
-  return url.toString();
-};
-
-export const parseDeepLink = (
-  searchParams: URLSearchParams
-): {
-  [key: string]: string | boolean | Record<string, any> | undefined;
-  state?: Record<string, any>;
-  fallback: boolean;
-} => {
-  const result: {
-    [key: string]: string | boolean | Record<string, any> | undefined;
-    state?: Record<string, any>;
-    fallback: boolean;
-  } = { fallback: false };
-
-  for (const [key, value] of searchParams.entries()) {
-    if (key === "state") {
-      try {
-        result.state = decryptState(value);
-      } catch (e) {
-        result.state = undefined;
-        result.fallback = true;
-      }
-    } else {
-      result[key] = value;
-    }
-  }
-
   return result;
-};
+}
 
-const use = () => {
-  const location = useLocation();
+// Utility: Format date as YYMMDD
+function getCurrentDateYYMMDD(): string {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  return `${yy}${mm}${dd}`;
+}
 
-  return useMemo(() => {
-    return parseDeepLink(new URLSearchParams(location.search));
-  }, [location.search]);
-};
+class SRID {
+  private countryCode: string;
+  private sharedId: string;
+  private transactionCount: number;
 
-export const link = {
-  generate,
-  use,
-};
+  constructor(countryCode: string) {
+    this.countryCode = countryCode.toUpperCase();
+    this.sharedId = `${this.countryCode}${getCurrentDateYYMMDD()}-${generateHashChunk()}`;
+    this.transactionCount = 0;
+  }
 
-export default link;
+  public getSharedId(): string {
+    return this.sharedId;
+  }
+
+  public generateUserId(): string {
+    return `USR-${this.sharedId}`;
+  }
+
+  public generateWalletId(): string {
+    return `WLT-${this.sharedId}`;
+  }
+
+  public generateTransactionId(): string {
+    this.transactionCount++;
+    const txnSuffix = String(this.transactionCount).padStart(3, '0');
+    return `TXN-${this.sharedId}-${txnSuffix}`;
+  }
+}
+
+export default SRID;
+
+/*
+Usage Example:
+
+import SRID from './srid';
+const srid = new SRID('KE');
+
+console.log(srid.getSharedId()); // e.g., KE250326-A7K2Z9
+console.log(srid.generateUserId()); // e.g., USR-KE250326-A7K2Z9
+console.log(srid.generateWalletId()); // e.g., WLT-KE250326-A7K2Z9
+console.log(srid.generateTransactionId()); // e.g., TXN-KE250326-A7K2Z9-001
+console.log(srid.generateTransactionId()); // e.g., TXN-KE250326-A7K2Z9-002
+*/

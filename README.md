@@ -1,83 +1,103 @@
-# 📡 react-deep-link
+# SRID – Shared Root Identifier Library
 
-A lightweight React-compatible deep linking library that enables you to share, persist, and restore complex UI states (like modals, drawers, tabs, and more) across the same or different domains.
+[![npm version](https://img.shields.io/npm/v/srid.svg)](https://www.npmjs.com/package/srid)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jonahgeek/srid/test.yml?branch=main)](https://github.com/jonahgeek/srid/actions)
+[![Coverage Status](https://img.shields.io/codecov/c/github/jonahgeek/srid/main.svg)](https://codecov.io/gh/jonahgeek/srid)
+
+`SRID` is a library that provides a simple and consistent way to generate **linked, traceable, and country-aware unique IDs** for users, wallets, and transactions. Ideal for remittance platforms, fintech products, and audit-oriented systems.
+
+---
+
+## 🔗 Why SRID?
+SRID establishes a common root identifier that ties together all related entities (user, wallet, transactions) in your system. It’s lightweight, deterministic, and designed for traceability.
 
 ---
 
 ## ✨ Features
 
-- Generate deep links with route, query, and encrypted UI state
-- Parse deep links and use them via a simple React hook
-- Cross-domain compatible
-- Optional fallback for corrupt/missing state
+- Shared Root Identifier (SRID) generation
+- Country code + date + hash-based format
+- Linked User ID, Wallet ID, and Transaction ID
+- Sequential transaction ID suffixes
+- Lightweight, zero-dependency
 
 ---
 
-## 🚀 Installation
+## 📦 Installation
 
 ```bash
-npm install react-deep-link
+npm install srid
 ```
 
 ---
 
-## 🧱 Usage
-
-### 1. Generating a Link
+## 🚀 Usage
 
 ```ts
-import { generateDeepLink } from "react-deep-link";
+import SRID from 'srid';
 
-const url = generateDeepLink({
-  baseUrl: "https://yourdomain.com",
-  route: "/dashboard",
-  params: { modal: "true" },
-  state: { userId: "123", drawerOpen: true },
-});
+const srid = new SRID('KE');
 
-// Outputs something like:
-// https://yourdomain.com/dashboard?modal=true&state=encryptedPayload
-```
-
-### 2. Parsing and Using in React
-
-```tsx
-import { useDeepLink } from "react-deep-link";
-
-function MyComponent() {
-  const { state, fallback } = useDeepLink();
-
-  if (fallback) return <div>Invalid or expired link</div>;
-
-  return <pre>{JSON.stringify(state)}</pre>;
-}
+console.log(srid.getSharedId());            // e.g., KE250326-A7K2Z9
+console.log(srid.generateUserId());         // e.g., USR-KE250326-A7K2Z9
+console.log(srid.generateWalletId());       // e.g., WLT-KE250326-A7K2Z9
+console.log(srid.generateTransactionId());  // e.g., TXN-KE250326-A7K2Z9-001
+console.log(srid.generateTransactionId());  // e.g., TXN-KE250326-A7K2Z9-002
 ```
 
 ---
 
-## 🔐 Security
+## 📚 ID Structure
 
-State passed in links is encrypted using a simple XOR mechanism. You can replace this with a more secure method (e.g., AES) using the `utils.ts` file.
+| ID Type         | Format Example                      |
+|------------------|-------------------------------------|
+| Shared ID        | `KE250326-A7K2Z9`                  |
+| User ID          | `USR-KE250326-A7K2Z9`              |
+| Wallet ID        | `WLT-KE250326-A7K2Z9`              |
+| Transaction ID   | `TXN-KE250326-A7K2Z9-001`          |
 
-> ❗ Avoid sharing sensitive data (passwords, tokens) in URLs.
+> Format: `[Prefix]-[CountryCode][YYMMDD]-[HashChunk](-Sequence)`
 
 ---
 
-## 📦 Scripts
+## 🧪 Running Tests
 
-- `npm run build` – Build the library
-- `npm run dev` – Watch mode for dev
-- `npm run lint` – Lint your code
-- `npm run test` – Run unit tests
+```bash
+npm test
+```
+
+Tests are written using [Jest](https://jestjs.io/).
+
+---
+
+## 🛠️ API Reference
+
+### `new SRID(countryCode: string)`
+Creates a new SRID instance using a country code (e.g., "KE").
+
+### `getSharedId(): string`
+Returns the core shared ID (used in all other IDs).
+
+### `generateUserId(): string`
+Returns a user ID with the shared root.
+
+### `generateWalletId(): string`
+Returns a wallet ID tied to the same root.
+
+### `generateTransactionId(): string`
+Returns a unique transaction ID with a sequential suffix.
+
+---
+
+## 💡 Use Cases
+
+- Cross-border remittance and wallet platforms
+- Systems that require linked IDs across entities
+- Auditable financial record management
 
 ---
 
 ## 📄 License
 
-MIT
-
----
-
-## ✍️ Author
-
-Jonathan Mwebaze
+MIT © 2025
