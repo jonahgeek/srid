@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SRID Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+      <h1 class="text-2xl font-bold mb-4 text-center">SRID Generator</h1>
+      <div class="mb-4">
+        <label for="country" class="block text-sm font-medium text-gray-700">Country Code (2 letters)</label>
+        <input id="country" type="text" maxlength="2" value="KE" class="mt-1 block w-full border border-gray-300 rounded-md p-2" />
+      </div>
+      <button id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">
+        Generate SRID
+      </button>
+      <div id="output" class="mt-6 text-sm text-gray-800"></div>
+    </div>
+
+    <script type="module">
+      import SRID from '../build/index.js';
+
+      const countryInput = document.getElementById('country');
+      const output = document.getElementById('output');
+      const generateBtn = document.getElementById('generateBtn');
+
+      generateBtn.onclick = () => {
+        const srid = new SRID(countryInput.value || 'KE');
+        const sharedId = srid.getSharedId();
+        const userId = srid.generateUserId();
+        const walletId = srid.generateWalletId();
+        const txnId1 = srid.generateTransactionId();
+        const txnId2 = srid.generateTransactionId();
+
+        output.innerHTML = `
+          <div class="space-y-2">
+            <p><strong>Shared ID:</strong> ${sharedId}</p>
+            <p><strong>User ID:</strong> ${userId}</p>
+            <p><strong>Wallet ID:</strong> ${walletId}</p>
+            <p><strong>Transaction ID 1:</strong> ${txnId1}</p>
+            <p><strong>Transaction ID 2:</strong> ${txnId2}</p>
+          </div>
+        `;
+      };
+    </script>
+  </body>
+</html>
