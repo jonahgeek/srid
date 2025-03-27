@@ -1,5 +1,4 @@
-
-import SRID from "../";
+import SRID from "../index";
 
 describe("SRID", () => {
   let generator: SRID;

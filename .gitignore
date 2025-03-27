@@ -9,6 +9,8 @@ dist/
 yarn.lock
 package-lock.json
 
+coverage/
+
 # IDE and editor files
 .vscode/
 .idea/

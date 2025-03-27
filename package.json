@@ -1,7 +1,7 @@
 {
   "name": "srid",
-  "version": "1.0.16",
-  "description": "A library that provides a simple and consistent way to generate linked, traceable, and country-aware unique IDs for users, wallets, and transactions.",
+  "version": "1.0.0",
+  "description": "A library for generating secure shared, traceable, and country-aware IDs for users, wallets, and transactions.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -9,21 +9,25 @@
     "build": "npm run clean && tsc",
     "dev": "tsc --watch",
     "lint": "eslint src --ext .ts,.tsx",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "files": [
     "build/*.js",
     "build/*.js.map",
     "build/*.d.ts",
-    "CONTRIBUTING.md",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
-    "react",
-    "deep-link",
-    "cross-domain",
-    "routing",
-    "state-management"
+    "typescript",
+    "id-generator",
+    "shared-id",
+    "srid",
+    "wallet",
+    "user-id",
+    "transaction-id",
+    "remittance",
+    "fintech"
   ],
   "author": "Jonahgeek",
   "repository": {
@@ -31,14 +35,9 @@
     "url": "https://github.com/jonahgeek/srid.git"
   },
   "license": "MIT",
-  "dependencies": {
-    "@types/react-router-dom": "^5.3.3",
-    "react": "^19.0.0",
-    "react-router-dom": "^5.3.4"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^29.5.14",
-    "@types/react": "19.0.12",
     "eslint": "9.23.0",
     "jest": "^29.7.0",
     "typescript": "^5.8.2"
