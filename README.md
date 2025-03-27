@@ -2,8 +2,6 @@
 
 [![npm version](https://img.shields.io/npm/v/srid.svg)](https://www.npmjs.com/package/srid)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/jonahgeek/srid/test.yml?branch=main)](https://github.com/jonahgeek/srid/actions)
-[![Coverage Status](https://img.shields.io/codecov/c/github/jonahgeek/srid/main.svg)](https://codecov.io/gh/jonahgeek/srid)
 
 `SRID` is a library that provides a simple and consistent way to generate **linked, traceable, and country-aware unique IDs** for users, wallets, and transactions. Ideal for remittance platforms, fintech products, and audit-oriented systems.
 
