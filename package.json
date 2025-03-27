@@ -1,6 +1,6 @@
 {
   "name": "srid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library for generating secure shared, traceable, and country-aware IDs for users, wallets, and transactions.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
